@@ -1,0 +1,40 @@
+<%- include('../includes/head.ejs') %>
+	<link rel="stylesheet" href="/css/style.css">
+	</head>
+	<body>
+			<%- include('../includes/primary-nav.ejs') %>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5 mx-auto bg-dark rounded-lg pt-3 mt-lg-5">
+            <form action="/signup" method="POST">
+                <div class="form-group">
+                  <label for="email" class="text-light">Email</label>
+                      <input class="form-control" type="email" name="email" placeholder="Email eg. johndoe@example.com">
+                </div>
+                  <div class="form-row mb-3">
+                    <div class="col">
+                        <label for="fname" class="text-light">First Name</label>
+                      <input type="text" class="form-control" name="fname" placeholder="First name">
+                    </div>
+                    <div class="col">
+                        <label for="lname" class="text-light">Last Name</label>
+                      <input type="text" class="form-control" name="lname" placeholder="Last name">
+                    </div>
+                  </div>
+                <div class="form-group">
+                  <label for="inputPassword" class="text-light">Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+
+                <div class="form-group">
+                  <label for="confirminputPassword" class="text-light">Confirm Password</label>
+                    <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password">
+                </div>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="submit" class="btn btn-primary mb-3" value="Sign Up">
+              </form>
+        </div>
+      </div>
+    </div>
+
+		<%- include('../includes/end.ejs') %>
