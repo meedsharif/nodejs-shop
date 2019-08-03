@@ -9,6 +9,7 @@ const User = require('../../models/User');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.getSignupPage = (req, res) => {
+	// If there is an error initialize the message var with error array from connect-flash library else set it as null.
 	let message = req.flash('error');
 	if (message.lenght > 0) {
 		message = message[0];
@@ -16,6 +17,8 @@ exports.getSignupPage = (req, res) => {
 		message = null;
 	}
 
+	// oldInput: if there is an error the input is kept even after refresh.
+	// validationErrors: stores the error objects
 	res.render('auth/signup', {
 		pageTitle: 'Sign Up',
 		path: '/signup',
@@ -35,7 +38,10 @@ exports.postSignupInput = (req, res, next) => {
 	const lname = req.body.lname;
 	const password = req.body.password;
 
+	// validationResult() holds the error array
 	const errors = validationResult(req);
+
+	// Render the signup page with addination error message if there is an error
 	if (!errors.isEmpty()) {
 		return res.status(422).render('auth/signup', {
 			path: '/signup',
@@ -49,8 +55,11 @@ exports.postSignupInput = (req, res, next) => {
 			validationErrors: errors.array()
 		});
 	}
+
+	// token for email activation
 	let token;
 
+	// encrypt password before storing the user object
 	bcrypt
 		.hash(password, 12)
 		.then(hashedPassword => {
@@ -69,13 +78,14 @@ exports.postSignupInput = (req, res, next) => {
 			return user.save();
 		})
 		.then(() => {
+			// Get the hostname with port in development and without port when in production
 			let hostname;
 			if (process.env.NODE_ENV === 'production') {
 				hostname = req.hostname;
 			} else {
 				hostname = req.headers.host;
 			}
-
+			// Send email to the user with the activation link
 			const msg = {
 				to: email,
 				from: 'admin@nodejs-shop.com',
@@ -99,8 +109,10 @@ exports.postSignupInput = (req, res, next) => {
 };
 
 exports.getAccountActivation = (req, res, next) => {
+	// Get the token from url
 	const token = req.params.token;
 
+	// find the user with the token and update the user object.
 	User.findOne({ accountActivation: { activateToken: token } })
 		.then(user => {
 			user.accountActivation = undefined;

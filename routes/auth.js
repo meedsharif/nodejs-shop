@@ -3,12 +3,28 @@ const { check } = require('express-validator');
 
 const User = require('../models/User');
 
+const authLogin = require('../controllers/auth/login');
 const authSignup = require('../controllers/auth/signup');
 
 const router = express.Router();
 
-router.get('/signup', authSignup.getSignupPage);
+router.get('/login', authLogin.getLoginPage);
+router.post(
+	'/login',
+	[
+		check('email', 'Enter a valid email')
+			.isEmail()
+			.normalizeEmail(),
+		check('password', 'Enter a valid password')
+			.not()
+			.isEmpty()
+	],
+	authLogin.postLoginInput
+);
+router.post('/logout', authLogin.postLogout);
 
+// Signup Related
+router.get('/signup', authSignup.getSignupPage);
 router.post(
 	'/signup',
 	[

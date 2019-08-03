@@ -47,8 +47,15 @@
 				>
 			</li>
 		</ul>
-		<button type="button" class="btn btn-outline-dark mr-3">Login</button>
-		<a href="/signup" class="btn btn-outline-info">Sign Up</a>
+		<% if(!isAuthenticated) { %>
+			<a href="/login" class="btn btn-outline-dark mr-3">Login</a>
+			<a href="/signup" class="btn btn-outline-info">Sign Up</a>
+		<% } else { %>
+			<form action="/logout" method="POST">
+				<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+				<button class="btn btn-outline-secondary mr-3" type="submit">Logout</button>
+			</form>
+		<% } %>
 		</button>
 	</div>
 </nav>

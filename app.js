@@ -14,6 +14,8 @@ const errorController = require('./controllers/error');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
+const User = require('./models/User');
+
 const MONGODB_URI = process.env.MONGODB_URI_STRING;
 
 const app = express();
@@ -71,9 +73,22 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+	// Continue if the user is not authenticated
 	if (!req.session.user) {
 		return next();
 	}
+	// Set user obj to the authenticated user to req.user
+	User.findById(req.session.user._id)
+		.then(user => {
+			if (!user) {
+				return next();
+			}
+			req.user = user;
+			next();
+		})
+		.catch(err => {
+			next(new Error(err));
+		});
 });
 
 app.use(csrfProtection);
