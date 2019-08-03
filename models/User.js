@@ -22,8 +22,7 @@ const userSchema = new Schema({
 		required: true
 	},
 	accountActivation: {
-		activateToken: String,
-		activateTokenExpiration: Date
+		activateToken: String
 	},
 	resetPassword: {
 		resetToken: String,

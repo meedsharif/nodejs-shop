@@ -63,6 +63,8 @@ app.use(
 	})
 );
 
+app.use(flash());
+
 app.use((req, res, next) => {
 	res.locals.isAuthenticated = req.session.isLoggedIn;
 	next();
@@ -89,6 +91,7 @@ app.use(errorController.get404);
 app.use((error, req, res, next) => {
 	console.log(error);
 	res.redirect('/500');
+	next();
 });
 
 mongoose
