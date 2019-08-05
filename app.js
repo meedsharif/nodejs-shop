@@ -74,6 +74,7 @@ app.use((req, res, next) => {
 
 app.use((req, res, next) => {
 	// Continue if the user is not authenticated
+	// console.log(req.user.resetPassword.resetTokenExpiration);
 	if (!req.session.user) {
 		return next();
 	}

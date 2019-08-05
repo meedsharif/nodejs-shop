@@ -16,20 +16,15 @@ exports.getSignupPage = (req, res) => {
 	} else {
 		message = null;
 	}
+	let oldInput = {
+		email: '',
+		fname: '',
+		lname: ''
+	};
 
 	// oldInput: if there is an error the input is kept even after refresh.
 	// validationErrors: stores the error objects
-	res.render('auth/signup', {
-		pageTitle: 'Sign Up',
-		path: '/signup',
-		errorMessage: message,
-		oldInput: {
-			email: '',
-			fname: '',
-			lname: ''
-		},
-		validationErrors: []
-	});
+	res.render('auth/signup', renderSignupPage(oldInput, message, []));
 };
 
 exports.postSignupInput = (req, res, next) => {
@@ -41,19 +36,20 @@ exports.postSignupInput = (req, res, next) => {
 	// validationResult() holds the error array
 	const errors = validationResult(req);
 
+	let oldInput = {
+		email,
+		fname,
+		lname
+	};
+
 	// Render the signup page with addination error message if there is an error
 	if (!errors.isEmpty()) {
-		return res.status(422).render('auth/signup', {
-			path: '/signup',
-			pageTitle: 'Signup',
-			errorMessage: errors.array()[0].msg,
-			oldInput: {
-				email,
-				fname,
-				lname
-			},
-			validationErrors: errors.array()
-		});
+		return res
+			.status(422)
+			.render(
+				'auth/signup',
+				renderSignupPage(oldInput, errors.array()[0].msg, errors.array())
+			);
 	}
 
 	// token for email activation
@@ -66,6 +62,7 @@ exports.postSignupInput = (req, res, next) => {
 			const buffer = crypto.randomBytes(32);
 			token = buffer.toString('hex');
 
+			// Create a user object and save it to db
 			const user = new User({
 				email,
 				name: { fname, lname },
@@ -126,4 +123,26 @@ exports.getAccountActivation = (req, res, next) => {
 			error.httpStatusCode = 500;
 			return next(error);
 		});
+};
+
+/**
+ * Example: renderSignupPage({email: emailInput, fname: fnameInput, lname: lnameInput}, 'Error Message', validationErrors[])
+ *
+ * @param {Object} oldInputObject Takes an object of inputs email, fname, lname
+ * @param {String} errorMessageString Takes errorMessage if there is any
+ * @param {Array} validationErrorsArray Takes error array from validation error
+ */
+
+const renderSignupPage = (
+	oldInputObject,
+	errorMessageString,
+	validationErrorsArray
+) => {
+	return {
+		pageTitle: 'Sign Up',
+		path: '/signup',
+		oldInput: oldInputObject,
+		errorMessage: errorMessageString,
+		validationErrors: validationErrorsArray
+	};
 };

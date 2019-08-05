@@ -1,7 +1,4 @@
-const crypto = require('crypto');
-
 const bcrypt = require('bcryptjs');
-const sgMail = require('@sendgrid/mail');
 const { validationResult } = require('express-validator');
 
 const User = require('../../models/User');
@@ -17,15 +14,7 @@ exports.getLoginPage = (req, res, next) => {
 
 	// oldInput: if there is an error the input is kept even after refresh.
 	// validationErrors: stores the error objects
-	res.render('auth/login', {
-		pageTitle: 'Login',
-		path: '/login',
-		errorMessage: message,
-		oldInput: {
-			email: ''
-		},
-		validationErrors: []
-	});
+	res.render('auth/login', renderLoginPage({ email: '' }, message, []));
 };
 
 exports.postLoginInput = (req, res, next) => {
@@ -37,28 +26,23 @@ exports.postLoginInput = (req, res, next) => {
 
 	// Render the login page with addination error message if there is an error
 	if (!errors.isEmpty()) {
-		return res.status(422).render('auth/login', {
-			pageTitle: 'Login',
-			path: '/login',
-			errorMessage: errors.array()[0].msg,
-			oldInput: {
-				email
-			},
-			validationErrors: errors.array()
-		});
+		return res
+			.status(422)
+			.render(
+				'auth/login',
+				renderLoginPage({ email }, errors.array()[0].msg, errors.array())
+			);
 	}
 
+	// Find user with the email. Render the page with error page if not found
 	User.findOne({ email }).then(user => {
 		if (!user) {
-			return res.status(422).render('auth/login', {
-				pageTitle: 'Login',
-				path: '/login',
-				errorMessage: 'Invalid email or password',
-				oldInput: {
-					email
-				},
-				validationErrors: []
-			});
+			return res
+				.status(422)
+				.render(
+					'auth/login',
+					renderLoginPage({ email }, 'Invalid email or password', [])
+				);
 		}
 
 		bcrypt
@@ -74,15 +58,12 @@ exports.postLoginInput = (req, res, next) => {
 					});
 				}
 				// If passwords do not match
-				return res.status(422).render('auth/login', {
-					pageTitle: 'Login',
-					path: '/login',
-					errorMessage: 'Invalid email or password',
-					oldInput: {
-						email
-					},
-					validationErrors: []
-				});
+				return res
+					.status(422)
+					.render(
+						'auth/login',
+						renderLoginPage({ email }, 'Invalid email or password', [])
+					);
 			})
 			.catch(err => {
 				const error = new Error(err);
@@ -97,4 +78,25 @@ exports.postLogout = (req, res, next) => {
 		console.log(err);
 		res.redirect('/');
 	});
+};
+
+/**
+ * Example: renderLoginPage({email: emailInput}, 'Error Message', validationErrors[])
+ *
+ * @param {Object} oldInputObject Takes an object of input (email)
+ * @param {String} errorMessageString Takes errorMessage if there is any
+ * @param {Array} validationErrorsArray Takes error array from validation error
+ */
+const renderLoginPage = (
+	oldInputObject,
+	errorMessageString,
+	validationErrorsArray
+) => {
+	return {
+		pageTitle: 'Login',
+		path: '/login',
+		errorMessage: errorMessageString,
+		oldInput: oldInputObject,
+		validationErrors: validationErrorsArray
+	};
 };
