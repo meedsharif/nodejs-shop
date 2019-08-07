@@ -11,6 +11,7 @@ const multer = require('multer');
 
 const errorController = require('./controllers/error');
 
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
 
@@ -31,7 +32,7 @@ const fileStorage = multer.diskStorage({
 		cb(null, 'images');
 	},
 	filename: (req, file, cb) => {
-		cb(null, new Date().getUTCMilliseconds() + '-' + file.originalname);
+		cb(null, Date.now() + '-' + file.originalname);
 	}
 });
 
@@ -68,7 +69,12 @@ app.use(
 app.use(flash());
 
 app.use((req, res, next) => {
-	res.locals.isAuthenticated = req.session.isLoggedIn;
+	let isAuthenticated = req.session.isLoggedIn;
+	res.locals.isAuthenticated = isAuthenticated;
+
+	if (isAuthenticated) {
+		res.locals.fname = req.session.user.name.fname;
+	}
 	next();
 });
 
@@ -98,6 +104,7 @@ app.use((req, res, next) => {
 	next();
 });
 
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 

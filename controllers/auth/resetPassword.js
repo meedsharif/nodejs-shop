@@ -112,21 +112,17 @@ exports.getNewPasswordPage = (req, res, next) => {
 
 			// The expiration time should be more than the current time. so if it is less then user cannot proceed any further
 			if (currentTime.getTime() > expireTime.getTime()) {
-				return res.status(422).render('auth/newpassword', {
-					pageTitle: 'New Password',
-					path: '/newpassword',
-					errorMessage: 'Time Expired please request for a new reset token',
-					validationErrors: []
-				});
+				return res
+					.status(422)
+					.render(
+						'auth/newpassword',
+						renderNewPasswordPage(
+							'Time expired please request a new password reset token',
+							[]
+						)
+					);
 			} else {
-				res.render('auth/newpassword', {
-					pageTitle: 'New Password',
-					path: '/newpassword',
-					userId: userDoc._id.toString(),
-					passwordToken: passToken,
-					errorMessage: message,
-					validationErrors: []
-				});
+				res.render('auth/newpassword', renderNewPasswordPage(message, []));
 			}
 		})
 		.catch(err => {
@@ -147,14 +143,12 @@ exports.postNewPasswordInput = (req, res, next) => {
 
 	// Render the login page with addination error message if there is an error
 	if (!errors.isEmpty()) {
-		return res.status(422).render('auth/newpassword', {
-			pageTitle: 'New Password',
-			path: '/newpassword',
-			userId,
-			passwordToken,
-			errorMessage: errors.array()[0].msg,
-			validationErrors: errors.array()
-		});
+		return res
+			.status(422)
+			.render(
+				'auth/newpassword',
+				renderNewPasswordPage(errors.array()[0].msg, errors.array())
+			);
 	}
 
 	User.findOne({
@@ -181,4 +175,15 @@ exports.postNewPasswordInput = (req, res, next) => {
 			error.httpStatusCode = 500;
 			return next(error);
 		});
+};
+
+const renderNewPasswordPage = (errorMessage, validationErrors) => {
+	return {
+		pageTitle: 'New Password',
+		path: '/newpassword',
+		userId,
+		passwordToken,
+		errorMessage,
+		validationErrors
+	};
 };

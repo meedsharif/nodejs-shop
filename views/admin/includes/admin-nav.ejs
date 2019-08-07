@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark">
+		<a class="navbar-brand" href="/">Brand name</a>
+		<button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" id="productdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Products</a>
+						<div class="dropdown-menu" aria-labelledby="productdropdown">
+							<a class="dropdown-item" href="#">View All Products</a>
+							<a class="dropdown-item" href="/admin/add-product">Add Product</a>
+						</div>
+					</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" id="settingsdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+					<div class="dropdown-menu" aria-labelledby="settingsdropdown">
+						<a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+			</ul>
+				<form action="/logout" method="POST">
+					<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+					<button class="btn btn-outline-info mr-3" type="submit">Logout</button>
+				</form>
+		</div>
+</nav>
+
+	<!-- <div class="nav-scroller bg-white box-shadow">
+		<nav class="nav nav-underline">
+			<a class="nav-link active" href="#">Dashboard</a>
+			<a class="nav-link" href="#">
+				Friends
+				<span class="badge badge-pill bg-light align-text-bottom">27</span>
+			</a>
+			<a class="nav-link" href="#">Explore</a>
+			<a class="nav-link" href="#">Suggestions</a>
+			<a class="nav-link" href="#">Link</a>
+			<a class="nav-link" href="#">Link</a>
+			<a class="nav-link" href="#">Link</a>
+			<a class="nav-link" href="#">Link</a>
+			<a class="nav-link" href="#">Link</a>
+		</nav>
+	</div> -->

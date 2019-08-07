@@ -20,7 +20,7 @@
 				>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">About</a>
+				<a class="nav-link" href="/shop">Shop</a>
 			</li>
 			<li class="nav-item dropdown">
 				<a
@@ -35,17 +35,18 @@
 					Products
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					<a class="dropdown-item" href="#">Action</a>
+					<a class="dropdown-item" href="#">Products</a>
 					<a class="dropdown-item" href="#">Another action</a>
-					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">Something else here</a>
 				</div>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"
-					>Admin</a
-				>
-			</li>
+			<% if(isAuthenticated) { %>
+				<li class="nav-item">
+					<a class="nav-link" href="/admin/home" tabindex="-1" aria-disabled="true"
+						>Admin</a
+					>
+				</li>
+			<% }%>
+
 		</ul>
 		<% if(!isAuthenticated) { %>
 			<a href="/login" class="btn btn-outline-dark mr-3">Login</a>

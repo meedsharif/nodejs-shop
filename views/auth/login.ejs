@@ -16,7 +16,7 @@
             </div>
               <% } %>
               <!-- Login form -->
-            <form action="/login" method="POST" novalidate>
+            <form action="/login" method="POST">
                 <div class="form-group">
                   <label for="email" class="text-light">Email</label>
                       <input class="<%= validationErrors.find(e => e.param === 'email') ? 'form-control is-invalid' : 'form-control' %>" type="email" name="email" placeholder="eg. johndoe@example.com" value="<%= oldInput.email %>">
