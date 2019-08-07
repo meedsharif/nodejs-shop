@@ -1,0 +1,25 @@
+<%- include('../includes/head.ejs') %>
+	<link rel="stylesheet" href="/css/style.css">
+	</head>
+	<body>
+			<%- include('../includes/primary-nav.ejs') %>
+    <div class="container mt-lg-5">
+      <div class="row">
+        <div class="col-md-6">
+          <img src="/<%= product.imageUrl %>" alt="<%= product.title %>" class="img-fluid">
+        </div>
+        <div class="col-md-6 d-flex align-items-start flex-column">
+          <span class="">
+              <h2><%= product.title %></h2>
+              <small><%= product.categories %></small>
+              <p class="paragraph"><%= product.description %></p>
+          </span>
+          <span class="mt-auto d-flex w-100">
+              <a href="#" class="btn btn-danger">Add to cart</a>
+              <small class="lead ml-auto">$<%= product.price %></small>
+            </span>
+        </div>
+      </div>
+    </div>
+
+		<%- include('../includes/end.ejs') %>
