@@ -16,7 +16,7 @@
           </button>
         </div>
           <% } %>
-        <form action="<% if(editing) { %><%= path %>/<%= product._id %><% } else { %><%= path %><% } %>", method="POST" enctype="multipart/form-data">
+        <form action="<% if(editing) { %><%= path %>/<%= product._id %>?editing=true<% } else { %><%= path %><% } %>", method="POST" enctype="multipart/form-data">
             <div class="form-group">
               <label for="title">Title</label>
               <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="<% if (hasError || editing) { %><%= product.title %><% } %>">
@@ -49,6 +49,7 @@
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <% if(editing) { %> 
+              <input type="hidden" name="productId" value="<%= product._id %>">
               <input type="submit" class="btn btn-warning mb-3" value="Update"> 
               <a href="/admin/delete-product/<%= product._id %>" class="btn btn-danger mb-3">Delete</a>
               <% } else { %> 

@@ -107,7 +107,7 @@ exports.postAddProductInput = (req, res, next) => {
 };
 
 exports.getEditProductPage = (req, res, next) => {
-	const productName = req.query.editing;
+	const productName = req.params.title;
 	console.log(productName);
 	Product.findOne({ title: productName, userId: req.user._id })
 		.then(product => {
@@ -117,14 +117,7 @@ exports.getEditProductPage = (req, res, next) => {
 			console.log(product);
 			res.render(
 				'admin/productform',
-				renderProductFormPage(
-					'Edit Product',
-					false,
-					product,
-					false,
-					[],
-					productName
-				)
+				renderProductFormPage('Edit Product', false, product, false, [], true)
 			);
 		})
 		.catch(err => {
@@ -164,7 +157,8 @@ exports.postEditPageInput = (req, res, next) => {
 					true,
 					productObj,
 					errors.array()[0].msg,
-					errors.array()
+					errors.array(),
+					true
 				)
 			);
 	}
@@ -232,7 +226,6 @@ const renderProductFormPage = (
 	return {
 		pageTitle,
 		path: '/admin/' + path,
-		editing: false,
 		hasError,
 		product: productObj,
 		errorMessage,

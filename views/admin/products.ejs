@@ -21,7 +21,7 @@
             <img src="/<%= product.imageUrl %>" alt="" class="mr-2 rounded" style="max-width: 4rem;">
             <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
               <% if (user._id.toString() === product.userId.toString()) {%> 
-                <a href="/admin/edit-product?editing=<%= product.title %>" class="d-block text-primary text-decoration-none"><%= product.title %></a>
+                <a href="/admin/edit-product/<%= product.title %>?editing=true" class="d-block text-primary text-decoration-none"><%= product.title %></a>
                 <%} else { %>
                   <span class="d-block text-dark"><%= product.title %></span>
                 <% } %>
