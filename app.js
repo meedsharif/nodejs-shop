@@ -73,7 +73,10 @@ app.use((req, res, next) => {
 	res.locals.isAuthenticated = isAuthenticated;
 
 	if (isAuthenticated) {
-		res.locals.fname = req.session.user.name.fname;
+		res.locals.user = {
+			_id: req.session.user._id,
+			fname: req.session.user.name.fname
+		};
 	}
 	next();
 });

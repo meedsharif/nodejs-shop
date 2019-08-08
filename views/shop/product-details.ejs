@@ -9,14 +9,16 @@
           <img src="/<%= product.imageUrl %>" alt="<%= product.title %>" class="img-fluid">
         </div>
         <div class="col-md-6 d-flex align-items-start flex-column">
-          <span class="">
-              <h2><%= product.title %></h2>
+          <span class="w-100">
+            <div class="row w-100">
+              <h2 class="col-md-10"><%= product.title %></h2>
+              <div class="display-4 col-md-2">$<%= product.price %></div>
+            </div>
               <small><%= product.categories %></small>
               <p class="paragraph"><%= product.description %></p>
           </span>
           <span class="mt-auto d-flex w-100">
               <a href="#" class="btn btn-danger">Add to cart</a>
-              <small class="lead ml-auto">$<%= product.price %></small>
             </span>
         </div>
       </div>
