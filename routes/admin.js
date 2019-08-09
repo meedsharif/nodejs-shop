@@ -23,6 +23,7 @@ router.post(
 				return Product.findOne({ title }).then(product => {
 					if (product) {
 						return Promise.reject(
+							// Check if the matches with another already existing product
 							'Product with this title exists please pick a different title'
 						);
 					}
@@ -53,7 +54,7 @@ router.post(
 			.custom((title, { req }) => {
 				return Product.findOne({ title }).then(product => {
 					if (product) {
-						console.log(req.id);
+						// Check if the matches with another already existing product other than this
 						if (product._id.toString() !== req.body.productId.toString())
 							return Promise.reject(
 								'Product with this title exists please pick a different title'

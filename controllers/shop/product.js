@@ -3,6 +3,20 @@ const Product = require('../../models/Product');
 exports.getProductsPage = (req, res, next) => {
 	Product.find()
 		.then(productsArr => {
+			productsArr.forEach(p => {
+				let str = p.description;
+
+				let strTrimmed;
+
+				if (str.length > 50) {
+					strTrimmed = str.substring(0, 50) + '...';
+				} else {
+					strTrimmed = p.description;
+				}
+
+				p.description = strTrimmed;
+			});
+
 			res.render('shop/products', {
 				pageTitle: 'Products Page',
 				path: 'shop',

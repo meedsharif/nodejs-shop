@@ -13,7 +13,11 @@
 								<a href="/product/<%= product.title %>" class="card-title h5 text-primary text-decoration-none"><%= product.title %></a>
 								<p class="card-text"><%= product.description %></p>
 								<span class="mt-auto d-flex w-100">
-									<a href="#" class="btn btn-danger">Add to cart</a>
+									<form action="/cart" method="POST">
+										<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+										<input type="submit" class="btn btn-danger" value="Add to Cart">
+										<input type="hidden" name="productId" value="<%= product._id %>">
+									</form>
 									<small class="lead ml-auto">$<%= product.price %></small>
 								</span>
 							</div>

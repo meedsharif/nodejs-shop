@@ -50,6 +50,7 @@ exports.postAddProductInput = (req, res, next) => {
 		quantity
 	};
 
+	// Show warning when image file is not selected
 	if (!image) {
 		return res
 			.status(422)
@@ -65,8 +66,10 @@ exports.postAddProductInput = (req, res, next) => {
 			);
 	}
 
+	// Get ValidationResult error from request
 	const errors = validationResult(req);
 
+	// Show error when exists
 	if (!errors.isEmpty()) {
 		return res
 			.status(422)
@@ -84,6 +87,7 @@ exports.postAddProductInput = (req, res, next) => {
 
 	const imageUrl = image.path;
 
+	// Set value when everything is file and save document.
 	const product = new Product({
 		title,
 		price,
@@ -111,10 +115,11 @@ exports.getEditProductPage = (req, res, next) => {
 	console.log(productName);
 	Product.findOne({ title: productName, userId: req.user._id })
 		.then(product => {
+			// Redirect when no product is found
 			if (!product) {
 				return res.redirect('/admin/home');
 			}
-			console.log(product);
+
 			res.render(
 				'admin/productform',
 				renderProductFormPage('Edit Product', false, product, false, [], true)
@@ -147,6 +152,7 @@ exports.postEditPageInput = (req, res, next) => {
 		quantity: updatedQuantity
 	};
 
+	// Show error if exists
 	if (!errors.isEmpty()) {
 		return res
 			.status(422)
@@ -163,18 +169,22 @@ exports.postEditPageInput = (req, res, next) => {
 			);
 	}
 
+	// find product using product id and user id
 	Product.findOne({ _id: productId, userId })
 		.then(product => {
+			// Redirect if product not found
 			if (!product) {
 				return res.redirect('/admin/home');
 			}
 
+			// Assign updated inputs to the document
 			product.title = updatedTitle;
 			product.price = updatedPrice;
 			product.categories = updatedCategories;
 			product.quantity = updatedQuantity;
 			product.description = updatedDescription;
 
+			// Assign new image and delete the previous if provided
 			if (updatedImage) {
 				fileHelper.deleteFile(product.imageUrl);
 				product.imageUrl = updatedImage.path;
@@ -197,6 +207,7 @@ exports.deleteProduct = (req, res, next) => {
 
 	Product.findOne({ _id: productId, userId: req.user._id })
 		.then(product => {
+			// Redirect if product does not exists
 			if (!product) {
 				return res.redirect('/admin/home');
 			}
@@ -204,6 +215,7 @@ exports.deleteProduct = (req, res, next) => {
 			return Product.deleteOne({ _id: productId });
 		})
 		.then(() => {
+			// Redirect if everything is alright
 			res.redirect('/admin/products');
 		})
 		.catch(err => {
@@ -213,6 +225,7 @@ exports.deleteProduct = (req, res, next) => {
 		});
 };
 
+// Render Page infos
 const renderProductFormPage = (
 	pageTitle,
 	hasError,

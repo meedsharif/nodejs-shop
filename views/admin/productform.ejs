@@ -49,6 +49,7 @@
             </div>
             <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <% if(editing) { %> 
+              <!-- When editing this hidden input with product id will be here. This will be used to check when the title of the product matches with a existing product if not then the title already used by another product and connot be used. -->
               <input type="hidden" name="productId" value="<%= product._id %>">
               <input type="submit" class="btn btn-warning mb-3" value="Update"> 
               <a href="/admin/delete-product/<%= product._id %>" class="btn btn-danger mb-3">Delete</a>
