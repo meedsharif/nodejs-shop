@@ -72,6 +72,24 @@ app.use((req, res, next) => {
 	let isAuthenticated = req.session.isLoggedIn;
 	res.locals.isAuthenticated = isAuthenticated;
 
+	let cartItem = 0;
+
+	// Show cartItem for unauthenticated user
+	if (req.session.cart) {
+		for (let i = 0; i < req.session.cart.length; i++) {
+			cartItem++;
+		}
+	}
+
+	// Show cartItem for authenticated user
+	if (req.session.isLoggedIn) {
+		for (let i = 0; i < req.session.user.cart.items.length; i++) {
+			cartItem++;
+		}
+	}
+
+	res.locals.cartItem = cartItem;
+
 	if (isAuthenticated) {
 		res.locals.user = {
 			_id: req.session.user._id,
@@ -94,6 +112,8 @@ app.use((req, res, next) => {
 				return next();
 			}
 			req.user = user;
+			// Update loggedIn users cart
+			req.session.user.cart = req.user.cart;
 			next();
 		})
 		.catch(err => {

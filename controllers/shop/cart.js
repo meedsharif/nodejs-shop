@@ -118,3 +118,36 @@ exports.postCart = (req, res, next) => {
 			return next(error);
 		});
 };
+
+exports.cartDeleteItem = (req, res, next) => {
+	const productId = req.body.productId;
+
+	if (!req.session.isLoggedIn) {
+		const updatedCartItems = req.session.cart.filter(item => {
+			return item.productId.toString() !== productId.toString();
+		});
+		req.session.cart = updatedCartItems;
+		res.redirect('/cart');
+	} else {
+		req.user
+			.removeFromCart(productId)
+			.then(() => {
+				// Update cartItem and redirect
+				let cartItem = req.session.user.cart.items.length;
+				if (req.session.isLoggedIn) {
+					for (let i = 0; i < req.session.user.cart.items.length; i++) {
+						cartItem++;
+					}
+				}
+
+				res.locals.cartItem = cartItem;
+
+				res.redirect('/cart');
+			})
+			.catch(err => {
+				const error = new Error(err);
+				error.httpStatusCode = 500;
+				return next(error);
+			});
+	}
+};
