@@ -1,0 +1,137 @@
+<%- include('../includes/head.ejs') %>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/stripe-element.css">
+    <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+  
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+      </style>
+	</head>
+	<body>
+    <%- include('../includes/primary-nav.ejs') %>
+
+
+    <div class="container">
+        <div class="py-5 text-center">
+          <h2>Checkout form</h2>
+        </div>
+      
+        <div class="row">
+          <div class="col-md-4 order-md-2 mb-4">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+              <span class="text-muted">Your cart</span>
+              <span class="badge badge-secondary badge-pill"><%= items.length %></span>
+            </h4>
+            <ul class="list-group mb-3">
+            <% for (let item of items) { %>
+            <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <div>
+                    <h6 class="my-0"><%= item.productId.title %></h6>
+                    <small class="text-muted">x<%= item.quantity %></small>
+                </div>
+                <span class="text-muted">$<%= item.productId.price * item.quantity %></span>
+            </li>
+            <% } %>
+              
+              <!-- <li class="list-group-item d-flex justify-content-between bg-light">
+                <div class="text-success">
+                  <h6 class="my-0">Promo code</h6>
+                  <small>EXAMPLECODE</small>
+                </div>
+                <span class="text-success">-$5</span>
+              </li> -->
+
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Total (USD)</span>
+                <strong>$<%= total %></strong>
+              </li>
+            </ul>
+      
+            <!-- <form class="card p-2">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Promo code">
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-secondary">Redeem</button>
+                </div>
+              </div>
+            </form> -->
+          </div>
+          <div class="col-md-8 order-md-1">
+            <h4 class="mb-3">Billing address</h4>
+            <form id="payment-form">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="fname">First Name</label>
+                        <input type="text" class="form-control" id="fname" placeholder="First Name">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="lname">Last Name</label>
+                        <input type="text" class="form-control" id="lname" placeholder="Last Name">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" class="form-control" id="email" placeholder="johndoe@example.com">
+                    </div>
+                    <div class="form-group">
+                      <label for="address">Address</label>
+                      <input type="text" class="form-control" id="address" placeholder="1234 Main St">
+                    </div>
+                    <div class="form-group">
+                      <label for="address2">Address 2</label>
+                      <input type="text" class="form-control" id="address2" placeholder="Apartment, studio, or floor">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">City</label>
+                        <input type="text" class="form-control" id="inputCity">
+                      </div>
+
+                      <div class="form-group col-md-2">
+                        <label for="inputZip">Zip</label>
+                        <input type="text" class="form-control" id="inputZip">
+                      </div>
+                    </div>
+
+                    <!-- <div class="form-row col-md-2"> -->
+                    <!-- <label for="card-element"> -->
+                        <!-- Credit or debit card -->
+                    <!-- </label> -->
+                    <!-- <div id="card-element"> -->
+                        <!-- A Stripe Element will be inserted here. -->
+                    <!-- </div> -->
+                
+                    <!-- Used to display form errors. -->
+                    <!-- <div id="card-errors" role="alert"></div>
+                    </div> -->
+
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                </form>
+          </div>
+        </div>
+      
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+          <p class="mb-1">&copy; 2019 Company Name</p>
+          <ul class="list-inline">
+            <li class="list-inline-item"><a href="#">Privacy</a></li>
+            <li class="list-inline-item"><a href="#">Terms</a></li>
+            <li class="list-inline-item"><a href="#">Support</a></li>
+          </ul>
+        </footer>
+      </div>
+
+      <!-- <script src="https://js.stripe.com/v3/"></script> -->
+      <!-- <script src="/js/stripe-element.js"></script> -->
+      <%- include('../includes/end.ejs') %>
+

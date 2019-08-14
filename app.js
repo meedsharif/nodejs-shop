@@ -76,16 +76,12 @@ app.use((req, res, next) => {
 
 	// Show cartItem for unauthenticated user
 	if (req.session.cart) {
-		for (let i = 0; i < req.session.cart.length; i++) {
-			cartItem++;
-		}
+		cartItem = req.session.cart.length;
 	}
 
 	// Show cartItem for authenticated user
 	if (req.session.isLoggedIn) {
-		for (let i = 0; i < req.session.user.cart.items.length; i++) {
-			cartItem++;
-		}
+		cartItem = req.session.user.cart.items.length;
 	}
 
 	res.locals.cartItem = cartItem;

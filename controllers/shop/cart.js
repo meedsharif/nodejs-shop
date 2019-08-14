@@ -151,3 +151,38 @@ exports.cartDeleteItem = (req, res, next) => {
 			});
 	}
 };
+
+exports.getCheckoutPage = (req, res, next) => {
+	let items;
+	let total = 0;
+
+	if (!req.session.isLoggedIn) {
+	} else {
+		req.user
+			.populate('cart.items.productId')
+			.execPopulate()
+			.then(user => {
+				items = user.cart.items;
+
+				items.forEach(p => {
+					if (p.quantity > 1) {
+						total += p.productId.price * p.quantity;
+					} else {
+						total += p.productId.price;
+					}
+				});
+
+				res.render('shop/checkout', {
+					pageTitle: 'Checkout Page',
+					path: 'checkout',
+					items,
+					total
+				});
+			})
+			.catch(err => {
+				const error = new Error(err);
+				error.httpStatusCode = 500;
+				return next(error);
+			});
+	}
+};
