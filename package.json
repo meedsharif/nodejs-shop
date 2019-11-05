@@ -30,7 +30,7 @@
 		"express-validator": "^6.1.1",
 		"jquery": "^3.4.1",
 		"mongodb": "^3.3.0-beta2",
-		"mongoose": "^5.2.17",
+		"mongoose": "^5.7.5",
 		"multer": "^1.4.2",
 		"nodemailer": "^6.3.0",
 		"nodemailer-sendgrid-transport": "^0.2.0",
